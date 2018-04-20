@@ -9,6 +9,9 @@ import android.widget.AdapterView;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 /*
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,7 +24,7 @@ public class AscDesActivity extends AppCompatActivity {
     ListView list;
     String[] strMonths= new String[]{"January","February","March","April","May","June",
             "July","August", "September","October", "November", "December"};
-    boolean blnOrderMode=true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,35 +42,30 @@ public class AscDesActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(blnOrderMode)
                     Toast.makeText(AscDesActivity.this, strMonths[position], Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(AscDesActivity.this, strMonths[11-position], Toast.LENGTH_SHORT).show();
             }
         });
 
 
+        /* Alphabetical descending order */
 
         btnDesc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] strTempMonths = new String[12];
-                for(int i=0; i<12;i++){
-                    strTempMonths[11-i]=strMonths[i];
-                }
-                ArrayAdapter<String> adapterDesc= new ArrayAdapter<String>(v.getContext(), android.R.layout.simple_list_item_1, strTempMonths);
+                Arrays.sort(strMonths, Collections.reverseOrder(String.CASE_INSENSITIVE_ORDER));
+                ArrayAdapter<String> adapterDesc= new ArrayAdapter<String>(v.getContext(), android.R.layout.simple_list_item_1, strMonths);
                 list.setAdapter(adapterDesc);
-                blnOrderMode=false;
             }
         });
 
+        /* alphabetical ascending order */
         btnAsc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Arrays.sort(strMonths);
                 ArrayAdapter<String> adapterAsc= new ArrayAdapter<String>(v.getContext(), android.R.layout.simple_list_item_1, strMonths);
                 list.setAdapter(adapterAsc);
-                blnOrderMode=true;
-            }
+           }
         });
     }
 
